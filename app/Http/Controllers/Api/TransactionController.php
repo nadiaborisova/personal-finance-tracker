@@ -16,6 +16,7 @@ class TransactionController extends Controller
         public function index(Request $request)
     {
         $transactions = Auth::user()->transactions()
+            ->with(['category'])
             ->orderBy('transaction_date', 'desc')
             ->paginate(10);
 
@@ -40,7 +41,8 @@ class TransactionController extends Controller
     public function show(Transaction $transaction)
     {
         $this->authorize('view', $transaction);
-        return new TransactionResource($transaction);
+        
+        return new TransactionResource($transaction->load('category'));
     }
 
     public function update(Request $request, Transaction $transaction)

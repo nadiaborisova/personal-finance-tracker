@@ -13,6 +13,28 @@
 
 namespace App\Models{
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget query()
+ */
+	class Budget extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Budget> $budgets
+ * @property-read int|null $budgets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
+ */
+	class Category extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * @property int $id
  * @property int $user_id
  * @property string $description

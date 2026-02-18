@@ -25,17 +25,29 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('amount')
                     ->numeric()
+                    ->prefix('€')
                     ->required(),
+
                 Forms\Components\Select::make('type')
                     ->options([
                         'income' => 'Income',
                         'expense' => 'Expense',
                     ])
                     ->required(),
-                Forms\Components\TextInput::make('category')
+
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                    ])
                     ->required(),
+                    
                 Forms\Components\DatePicker::make('transaction_date')
                     ->default(now())
                     ->required(),
@@ -48,14 +60,17 @@ class TransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('amount')
-                ->money('EUR')
-                ->sortable()
-                ->summarize(
-                    Tables\Columns\Summarizers\Sum::make()
-                        ->label('Total')
-                        ->money('EUR')
-                ),
+                    ->money('EUR')
+                    ->sortable()
+                    ->color(fn (Transaction $record): string => $record->type === 'income' ? 'success' : 'danger')
+                    ->summarize(
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->label('Total')
+                            ->money('EUR')
+                    ),
+
                 Tables\Columns\IconColumn::make('type')
                     ->icon(fn (string $state): string => match ($state) {
                         'income' => 'heroicon-o-arrow-trending-up',
@@ -65,7 +80,13 @@ class TransactionResource extends Resource
                         'income' => 'success',
                         'expense' => 'danger',
                     }),
-                Tables\Columns\TextColumn::make('category'),
+
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->badge()
+                    ->color('gray')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->date()
                     ->sortable(),
@@ -76,6 +97,9 @@ class TransactionResource extends Resource
                         'income' => 'Income',
                         'expense' => 'Expense',
                     ]),
+                
+                Tables\Filters\SelectFilter::make('category')
+                    ->relationship('category', 'name')
             ]);
     }
 

@@ -14,7 +14,11 @@ class TransactionResource extends JsonResource
             'description' => $this->description,
             'amount' => (float) $this->amount,
             'type' => $this->type,
-            'category' => $this->category,
+            'category' => [
+                'id' => $this->category?->id,
+                'name' => $this->category?->name,
+                'color' => $this->category?->color,
+            ],
             'date' => $this->transaction_date->format('Y-m-d'),
             'human_date' => $this->transaction_date->diffForHumans(),
             'created_at' => $this->created_at->toDateTimeString(),

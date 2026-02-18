@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'user_id', 'description', 'amount', 'type', 'category', 'transaction_date'
+        'user_id', 'description', 'amount', 'type', 'category_id', 'transaction_date'
     ];
 
     protected $casts = [
@@ -20,5 +20,9 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

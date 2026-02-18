@@ -8,8 +8,6 @@ class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $totalBalance = \App\Models\Transaction::sum('amount');
-
         $monthlyIncome = \App\Models\Transaction::where('type', 'income')
             ->whereMonth('transaction_date', now()->month)
             ->whereYear('transaction_date', now()->year)
@@ -19,6 +17,8 @@ class StatsOverview extends BaseWidget
             ->whereMonth('transaction_date', now()->month)
             ->whereYear('transaction_date', now()->year)
             ->sum('amount');
+
+        $totalBalance = $monthlyIncome - $monthlyExpenses;
 
         return [
             \Filament\Widgets\StatsOverviewWidget\Stat::make('Total Balance', number_format($totalBalance, 2) . ' EUR')
