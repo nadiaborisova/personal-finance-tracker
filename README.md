@@ -4,9 +4,11 @@ A robust and modern financial management system built with **Laravel 12** and **
 
 ## Key Features
 * **Interactive Dashboard** – Visualize your financial health with monthly trend charts (Line Charts).
+* **Smart Budgeting** – Set limits by category with automatic tracking of spent amounts and percentage progress.
+* **Category Management** – Full control over transaction types with custom color-coded categories.
 * **Live Stats Overview** – Instant monitoring of Total Balance, Monthly Income, and Monthly Expenses.
 * **Transaction Management** – Full CRUD system with categorized records and custom transaction dates.
-* **RESTful API Ready** – Built-in API endpoints for fetching and managing transactions, ideal for mobile or third-party integration.
+* **RESTful API Ready** – Fully grouped endpoints for Transactions, Categories, and Budgets, secured by Laravel Sanctum.
 * **Automated Testing** – Comprehensive PHPUnit test suite ensuring 100% accuracy in balance calculations and data integrity.
 * **Sleek UI/UX** – A responsive, dark-mode-ready interface powered by Tailwind CSS.
 
