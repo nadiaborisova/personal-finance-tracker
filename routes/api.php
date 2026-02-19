@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\TransactionController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\BudgetController;
+use App\Http\Controllers\Api\{
+    AuthController,
+    DashboardController,
+    TransactionController,    
+    CategoryController,
+    BudgetController
+};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +20,12 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    // Dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'index']);
+
     // Transactions
     Route::prefix('transactions')->group(function () {
-        Route::get('/stats', [TransactionController::class, 'stats']);
+        // Route::get('/stats', [TransactionController::class, 'stats']);
         Route::get('/trashed', [TransactionController::class, 'trashed']);
         Route::post('/{id}/restore', [TransactionController::class, 'restore']);
         Route::delete('/{id}/force-delete', [TransactionController::class, 'forceDelete']);

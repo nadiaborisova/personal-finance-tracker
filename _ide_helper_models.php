@@ -13,22 +13,55 @@
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property int $user_id
+ * @property int $category_id
+ * @property numeric $amount
+ * @property \Illuminate\Support\Carbon $starts_at
+ * @property \Illuminate\Support\Carbon $ends_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category $category
+ * @property-read mixed $spent_amount
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereStartsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Budget whereUserId($value)
  */
 	class Budget extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $name
+ * @property string|null $icon
+ * @property string|null $color
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Budget> $budgets
  * @property-read int|null $budgets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereUserId($value)
  */
 	class Category extends \Eloquent {}
 }
@@ -40,18 +73,19 @@ namespace App\Models{
  * @property string $description
  * @property numeric $amount
  * @property string $type
- * @property string $category
+ * @property int $category_id
  * @property \Illuminate\Support\Carbon $transaction_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Category $category
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction whereDescription($value)
@@ -76,6 +110,10 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Budget> $budgets
+ * @property-read int|null $budgets_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens

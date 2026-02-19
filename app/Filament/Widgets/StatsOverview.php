@@ -3,17 +3,24 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Transaction;
+
 
 class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $monthlyIncome = \App\Models\Transaction::where('type', 'income')
+        $userId = Auth::id();
+
+        $monthlyIncome = Transaction::where('user_id', $userId)
+            ->where('type', 'income')
             ->whereMonth('transaction_date', now()->month)
             ->whereYear('transaction_date', now()->year)
             ->sum('amount');
 
-        $monthlyExpenses = \App\Models\Transaction::where('type', 'expense')
+        $monthlyExpenses = Transaction::where('user_id', $userId)
+            ->where('type', 'expense')
             ->whereMonth('transaction_date', now()->month)
             ->whereYear('transaction_date', now()->year)
             ->sum('amount');
