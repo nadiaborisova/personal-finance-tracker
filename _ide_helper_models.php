@@ -70,6 +70,43 @@ namespace App\Models{
 /**
  * @property int $id
  * @property int $user_id
+ * @property int $category_id
+ * @property string $description
+ * @property numeric $amount
+ * @property string $type
+ * @property string $frequency
+ * @property \Illuminate\Support\Carbon $starts_at
+ * @property \Illuminate\Support\Carbon $next_due_date
+ * @property \Illuminate\Support\Carbon|null $ends_at
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category $category
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereNextDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereStartsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RecurringTransaction whereUserId($value)
+ */
+	class RecurringTransaction extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $user_id
  * @property string $description
  * @property numeric $amount
  * @property string $type

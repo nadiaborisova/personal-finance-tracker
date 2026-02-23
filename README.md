@@ -11,6 +11,7 @@ A robust and modern financial management system built with **Laravel 12** and **
 * **Category Management** – Full control over transaction types with custom color-coded categories.
 * **Transaction Management** – Full CRUD system with categorized records and custom transaction dates.
 * **RESTful API Ready** – Fully grouped endpoints for Transactions, Categories, and Budgets, secured by Laravel Sanctum.
+* **Recurring Transactions** – Automate repeating income and expenses (e.g. rent, salary) with configurable frequency (daily, weekly, monthly, yearly). Transactions are generated automatically via Laravel Scheduler, with smart duplicate detection that prevents re-creation if a matching transaction already exists for the period.
 * **Automated Testing** – Comprehensive PHPUnit test suite ensuring 100% accuracy in balance calculations and data integrity.
 * **Sleek UI/UX** – A responsive, dark-mode-ready interface powered by Filament PHP and Tailwind CSS, featuring an organized widget-based layout.
 
@@ -19,5 +20,6 @@ A robust and modern financial management system built with **Laravel 12** and **
 - **Admin Panel:** Filament PHP v3
 - **API Architecture:** RESTful API (Laravel Sanctum)
 - **Data Visualization:** Laravel Trend / Chart.js
+- **Task Scheduling:** Laravel Scheduler (Recurring Transactions)
 - **Database:** SQLite (Default) / MySQL
 - **Testing:** PHPUnit
