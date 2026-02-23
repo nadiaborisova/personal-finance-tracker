@@ -37,4 +37,10 @@ class CategoryChart extends ChartWidget
     {
         return 'doughnut';
     }
+
+    protected function getMaxHeight(): ?string
+    {
+        return '275px';
+    }
+
 }

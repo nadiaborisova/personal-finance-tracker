@@ -9,6 +9,8 @@ use App\Models\Transaction;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         $userId = Auth::id();

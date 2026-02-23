@@ -8,6 +8,7 @@ use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Carbon\Carbon;
 
+
 class TransactionChart extends ChartWidget
 {
     protected static ?string $heading = 'Monthly Transactions';

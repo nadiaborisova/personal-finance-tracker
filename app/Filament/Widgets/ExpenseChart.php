@@ -10,7 +10,7 @@ use Filament\Widgets\ChartWidget;
 class ExpenseChart extends ChartWidget
 {
     protected static ?string $heading = 'Daily Expenses (Current Month)';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
     protected function getData(): array
     {
