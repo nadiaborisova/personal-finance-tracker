@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RecurringTransactionResource\Pages;
 use App\Models\Category;
 use App\Models\RecurringTransaction;
+use App\Filament\Resources\RecurringTransactionResource\Pages;
+use App\Filament\Support\CategoryBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,19 +13,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use App\Filament\Support\CategoryBadge;
 
 class RecurringTransactionResource extends Resource
 {
     protected static ?string $model = RecurringTransaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path';
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->where('user_id', Auth::id());
-    }
 
     public static function form(Form $form): Form
     {
@@ -161,5 +155,10 @@ class RecurringTransactionResource extends Resource
             'create' => Pages\CreateRecurringTransaction::route('/create'),
             'edit'   => Pages\EditRecurringTransaction::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::id());
     }
 }

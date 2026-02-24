@@ -7,6 +7,7 @@ use App\Models\RecurringTransaction;
 use App\Services\RecurringTransactionService;
 use App\Http\Resources\Api\V1\RecurringTransactionResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RecurringTransactionController extends Controller
 {
@@ -16,6 +17,8 @@ class RecurringTransactionController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', RecurringTransaction::class);
+
         $recurring = $request->user()
             ->recurringTransactions()
             ->with('category')
@@ -26,8 +29,13 @@ class RecurringTransactionController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', RecurringTransaction::class);
+
         $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => [
+                'required',
+                Rule::exists('categories', 'id')->where(fn ($query) => $query->where('user_id', $request->user()->id)),
+            ],
             'description' => 'required|string',
             'amount'      => 'required|numeric|min:0.01',
             'type'        => 'required|in:income,expense',
@@ -41,22 +49,27 @@ class RecurringTransactionController extends Controller
         return new RecurringTransactionResource($recurring->load('category'));
     }
 
-    public function show(Request $request, RecurringTransaction $recurringTransaction)
+    public function show(RecurringTransaction $recurringTransaction)
     {
-        abort_if($recurringTransaction->user_id !== $request->user()->id, 403);
+        $this->authorize('view', $recurringTransaction);
 
         return new RecurringTransactionResource($recurringTransaction->load('category'));
     }
 
     public function update(Request $request, RecurringTransaction $recurringTransaction)
     {
-        abort_if($recurringTransaction->user_id !== $request->user()->id, 403);
+        $this->authorize('update', $recurringTransaction);
 
         $data = $request->validate([
-            'description' => 'sometimes|string',
+            'category_id' => [
+                'sometimes',
+                'required',
+                Rule::exists('categories', 'id')->where(fn ($query) => $query->where('user_id', $request->user()->id)),
+            ],
+            'description' => 'sometimes|string|max:255',
             'amount'      => 'sometimes|numeric|min:0.01',
             'is_active'   => 'sometimes|boolean',
-            'ends_at'     => 'nullable|date',
+            'ends_at'     => 'nullable|date|after_or_equal:starts_at',
         ]);
 
         $recurring = $this->service->update($recurringTransaction, $data);
@@ -64,12 +77,12 @@ class RecurringTransactionController extends Controller
         return new RecurringTransactionResource($recurring->load('category'));
     }
 
-    public function destroy(Request $request, RecurringTransaction $recurringTransaction)
+    public function destroy(RecurringTransaction $recurringTransaction)
     {
-        abort_if($recurringTransaction->user_id !== $request->user()->id, 403);
+        $this->authorize('delete', $recurringTransaction);
 
         $this->service->delete($recurringTransaction);
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }
