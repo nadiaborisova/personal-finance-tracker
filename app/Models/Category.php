@@ -25,4 +25,15 @@ class Category extends Model
     public function budgets() {
         return $this->hasMany(Budget::class);
     }
+
+    public function getBadgeHtmlAttribute()
+    {
+        $color = $this->color ?? '#6b7280';
+
+        return "<span style='display:inline-flex;align-items:center;gap:6px'>
+                    <span style='width:10px;height:10px;border-radius:50%;background:{$color}'></span>
+                    {$this->name}
+                </span>";
+    }
+
 }

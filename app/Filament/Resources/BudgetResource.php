@@ -56,9 +56,9 @@ class BudgetResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('category.badge_html')
                     ->label('Category')
-                    ->badge(),
+                    ->html(),
 
                 Tables\Columns\TextColumn::make('amount')
                     ->money('EUR')

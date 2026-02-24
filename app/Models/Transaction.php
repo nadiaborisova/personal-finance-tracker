@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Transaction extends Model
 {
     use SoftDeletes;
+
+    protected $with = ['category'];
+
     protected $fillable = [
         'user_id', 'description', 'amount', 'type', 'category_id', 'transaction_date'
     ];

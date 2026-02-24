@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RecurringTransaction extends Model
 {
+    protected $with = ['category'];
+
     protected $fillable = [
         'user_id', 'category_id', 'description',
         'amount', 'type', 'frequency',

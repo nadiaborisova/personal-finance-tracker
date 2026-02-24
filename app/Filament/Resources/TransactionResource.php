@@ -81,10 +81,9 @@ class TransactionResource extends Resource
                         'expense' => 'danger',
                     }),
 
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('category.badge_html')
                     ->label('Category')
-                    ->badge()
-                    ->color('gray')
+                    ->html()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('transaction_date')
