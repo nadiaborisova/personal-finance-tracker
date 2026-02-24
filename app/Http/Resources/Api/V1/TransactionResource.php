@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\api\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\V1\CategoryResource;
 
 class TransactionResource extends JsonResource
 {
@@ -14,14 +15,10 @@ class TransactionResource extends JsonResource
             'description' => $this->description,
             'amount' => (float) $this->amount,
             'type' => $this->type,
-            'category' => [
-                'id' => $this->category?->id,
-                'name' => $this->category?->name,
-                'color' => $this->category?->color,
-            ],
+            'category'    => new CategoryResource($this->whenLoaded('category')),
             'date' => $this->transaction_date->format('Y-m-d'),
             'human_date' => $this->transaction_date->diffForHumans(),
-            'created_at' => $this->created_at->toDateTimeString(),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

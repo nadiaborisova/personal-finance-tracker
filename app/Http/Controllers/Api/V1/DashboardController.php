@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -65,29 +65,30 @@ class DashboardController extends Controller
     {
         return $user->transactions()
             ->where('type', 'expense')
-            ->with('category')
-            ->select('category_id', DB::raw('SUM(amount) as total'))
-            ->groupBy('category_id')
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->select('categories.name', 'categories.color', DB::raw('SUM(transactions.amount) as total'))
+            ->groupBy('categories.id', 'categories.name', 'categories.color')
             ->orderByDesc('total')
             ->limit(5)
-            ->get()
-            ->map(fn($item) => [
-                'name' => $item->category->name ?? 'Unknown',
-                'amount' => (float)$item->total,
-                'color' => $item->category->color ?? '#666',
-            ]);
+            ->get();
     }
 
     private function getBudgetHealth($user)
     {
         return $user->budgets()
+            ->with('category')
+            ->withSum(['transactions as spent' => function ($query) {
+                $query->where('type', 'expense')
+                    ->whereColumn('transaction_date', '>=', 'budgets.starts_at')
+                    ->whereColumn('transaction_date', '<=', 'budgets.ends_at');
+            }], 'amount')
             ->get()
             ->map(fn($budget) => [
                 'category' => $budget->category->name,
-                'limit' => $budget->amount,
-                'spent' => $budget->spent_amount,
-                'percentage' => round(($budget->spent_amount / $budget->amount) * 100, 2),
-                'status' => $budget->spent_amount > $budget->amount ? 'over_budget' : 'on_track'
+                'limit' => (float)$budget->amount,
+                'spent' => (float)($budget->spent ?? 0),
+                'percentage' => $budget->amount > 0 ? round((($budget->spent ?? 0) / $budget->amount) * 100, 2) : 0,
+                'status' => ($budget->spent ?? 0) > $budget->amount ? 'over_budget' : 'on_track'
             ]);
     }
 }

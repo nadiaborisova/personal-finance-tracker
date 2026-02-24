@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\{
     TransactionController,    
     CategoryController,
     BudgetController,
+    UserController,
     RecurringTransactionController
 };
 use Illuminate\Http\Request;
@@ -18,10 +19,8 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         
-        // Users
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
+        // User
+        Route::get('/me', [UserController::class, 'me']);
 
         // Dashboard
         Route::get('/dashboard/stats', [DashboardController::class, 'index']);
@@ -45,4 +44,3 @@ Route::prefix('v1')->group(function () {
     });
 
 });
-

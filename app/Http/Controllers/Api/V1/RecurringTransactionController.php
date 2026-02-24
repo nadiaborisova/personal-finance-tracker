@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\RecurringTransaction;
 use App\Services\RecurringTransactionService;
+use App\Http\Resources\Api\V1\RecurringTransactionResource;
 use Illuminate\Http\Request;
 
 class RecurringTransactionController extends Controller
@@ -20,7 +21,7 @@ class RecurringTransactionController extends Controller
             ->with('category')
             ->get();
 
-        return response()->json($recurring);
+        return RecurringTransactionResource::collection($recurring);
     }
 
     public function store(Request $request)
@@ -37,14 +38,14 @@ class RecurringTransactionController extends Controller
 
         $recurring = $this->service->create($data, $request->user()->id);
 
-        return response()->json($recurring, 201);
+        return new RecurringTransactionResource($recurring->load('category'));
     }
 
     public function show(Request $request, RecurringTransaction $recurringTransaction)
     {
         abort_if($recurringTransaction->user_id !== $request->user()->id, 403);
 
-        return response()->json($recurringTransaction->load('category'));
+        return new RecurringTransactionResource($recurringTransaction->load('category'));
     }
 
     public function update(Request $request, RecurringTransaction $recurringTransaction)
@@ -60,7 +61,7 @@ class RecurringTransactionController extends Controller
 
         $recurring = $this->service->update($recurringTransaction, $data);
 
-        return response()->json($recurring);
+        return new RecurringTransactionResource($recurring->load('category'));
     }
 
     public function destroy(Request $request, RecurringTransaction $recurringTransaction)
