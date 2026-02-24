@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-
+use App\Filament\Support\CategoryBadge;
 
 class RecurringTransactionResource extends Resource
 {
@@ -84,9 +84,12 @@ class RecurringTransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.badge_html')
+
+                Tables\Columns\TextColumn::make('category.name')
                     ->label('Category')
-                    ->html(),
+                    ->html()
+                    ->searchable()
+                    ->formatStateUsing(fn ($state, $record) => CategoryBadge::render($record->category)),
 
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),

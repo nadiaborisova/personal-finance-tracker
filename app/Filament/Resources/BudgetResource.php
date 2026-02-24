@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Support\CategoryBadge;
 
 class BudgetResource extends Resource
 {
@@ -56,9 +57,11 @@ class BudgetResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.badge_html')
+                Tables\Columns\TextColumn::make('category.name')
                     ->label('Category')
-                    ->html(),
+                    ->html()
+                    ->searchable()
+                    ->formatStateUsing(fn ($state, $record) => CategoryBadge::render($record->category)),
 
                 Tables\Columns\TextColumn::make('amount')
                     ->money('EUR')
